@@ -49,8 +49,8 @@ being deleted, thumbnails files are deleted too.
 ### Admin
 
 To take full advantage of thumbnails filters one may want to use custom
-tabular inline template for models containing iage fields. To do so
-specify `template` parameter in the TabularInline admin class:
+tabular inline template for models containing image fields. To do so
+specify `template` parameter in the `TabularInline` admin class:
     class PhotoInline(admin.TabularInline):
         model = Photo
         template = 'thumbnails/tabular.html'
