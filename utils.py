@@ -3,21 +3,31 @@ import os
 import Image
 from django.conf import settings
 
-def get_thumbnail_filename(filepath, size, miniature_subdir, crop=False):
+def get_thumbnail_filename(filepath, size, crop=False):
+    if isinstance( size, tuple ):
+        size = '%dx%d' % size[:2]
     filehead, filetail = os.path.split(filepath)
     basename, format = os.path.splitext(filetail)
     miniature = basename + '_' + size + ( 'c' if crop else '') + format
-    filehead = os.path.join(filehead,miniature_subdir)
-    miniature_filename = os.path.join(filehead, miniature)
-    return (miniature,miniature_filename)
+
+    return miniature
 
 # modified snippet from djangosnippets.org
 def create_thumbnail(file, size=settings.THUMBNAILS_SIZE, miniature_subdir=settings.THUMBNAILS_SUBDIR, crop=False):
-    x, y = [int(x) for x in size.split('x')]
-    miniature,miniature_filename = get_thumbnail_filename(file.path, size, miniature_subdir, crop)
+    if isinstance( size, tuple ):
+        x, y = size[:2]
+    elif isinstance( size, basestring ):
+        x, y = [int(x) for x in size.split('x')]
+    #getting miniature name
+    miniature = get_thumbnail_filename(file.path, size, miniature_subdir, crop)
+    #getting miniature url
     filehead, filetail = os.path.split(file.url)
     filehead = os.path.join(filehead,miniature_subdir)
     miniature_url = filehead + '/' + miniature
+    #getting miniature filename
+    filehead2, filetail2 = os.path.split(file.path)
+    filehead2 = os.path.join(filehead2,miniature_subdir)
+    miniature_filename = os.path.join(filehead2, miniature)
     if os.path.exists(miniature_filename) and os.path.getmtime(file.path)>os.path.getmtime(miniature_filename):
         os.unlink(miniature_filename)
     # if miniature subdir does ot exist, create it
