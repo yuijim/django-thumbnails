@@ -25,7 +25,7 @@ stored. It is always relative to the directory containing original file.
 ### Filters
 
 Load filters in template using:
-    {% load thumbnail %}
+    {% load thumbnails %}
     
 To create normal thumbnails (width & height doesn't exceed specified
 dimentions, but whole image is resized proportionally) use one of the
@@ -54,3 +54,8 @@ specify `template` parameter in the `TabularInline` admin class:
     class PhotoInline(admin.TabularInline):
         model = Photo
         template = 'thumbnails/tabular.html'
+
+License
+-------
+
+django-thumbnails is distributed under New BSD License.

@@ -17,9 +17,9 @@ def create_thumbnail(file, size=settings.THUMBNAILS_SIZE, miniature_subdir=setti
     if isinstance( size, tuple ):
         x, y = size[:2]
     elif isinstance( size, basestring ):
-        x, y = [int(x) for x in size.split('x')]
+        x, y = [float(x) for x in size.split('x')]
     #getting miniature name
-    miniature = get_thumbnail_filename(file.path, size, miniature_subdir, crop)
+    miniature = get_thumbnail_filename(file.path, size, crop)
     #getting miniature url
     filehead, filetail = os.path.split(file.url)
     filehead = os.path.join(filehead,miniature_subdir)
@@ -43,11 +43,11 @@ def create_thumbnail(file, size=settings.THUMBNAILS_SIZE, miniature_subdir=setti
         if crop:
             cx,cy = image.size
             s = min(cx/x,cy/y)
-            nx,ny = s*x,s*y
-            ox,oy = (cx-nx)/2,(cy-ny)/2
+            nx,ny = int(s*x),int(s*y)
+            ox,oy = int((cx-nx)/2),int((cy-ny)/2)
             box = (ox,oy,ox+nx,oy+ny)
             image = image.crop(box)
-        image.thumbnail([x, y], Image.ANTIALIAS)
+        image.thumbnail([int(x), int(y)], Image.ANTIALIAS)
         try:
             image.save(miniature_filename, image.format, quality=90, optimize=1)
         except:
