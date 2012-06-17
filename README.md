@@ -14,6 +14,7 @@ Usage
 -----
 
 Django Thumbnails comes with two default settings:
+
     THUMBNAILS_SIZE = "128x128"
     THUMBNAILS_SUBDIR = "thumbnails"
     
@@ -25,17 +26,20 @@ stored. It is always relative to the directory containing original file.
 ### Filters
 
 Load filters in template using:
+
     {% load thumbnails %}
     
 To create normal thumbnails (width & height doesn't exceed specified
 dimentions, but whole image is resized proportionally) use one of the
 following:
+
     <img src="{{ object.image|thumbnail }}" />
     <img src="{{ object.image|thumbnail:"240x240" }}" />
 Argument of the filter specifies desired width x height.
 
 To create cropped thumbnail (width & height are exactly as specified - 
 not counting rounding errors) use:
+
     <img src="{{ object.image|thumbnail_crop }}" />
     <img src="{{ object.image|thumbnail_crop:"240x240" }}" />
 
@@ -51,6 +55,7 @@ being deleted, thumbnails files are deleted too.
 To take full advantage of thumbnails filters one may want to use custom
 tabular inline template for models containing image fields. To do so
 specify `template` parameter in the `TabularInline` admin class:
+
     class PhotoInline(admin.TabularInline):
         model = Photo
         template = 'thumbnails/tabular.html'
